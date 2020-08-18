@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.javaboy.provider.dao.GoodDao">
+
+    <resultMap type="com.javaboy.provider.entity.Good" id="GoodMap">
+        <result property="gid" column="gid" jdbcType="INTEGER"/>
+        <result property="gname" column="gname" jdbcType="VARCHAR"/>
+        <result property="gprice" column="gprice" jdbcType="NUMERIC"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="GoodMap">
+        select
+          gid, gname, gprice
+        from springcloud_provider.good
+        where gid = #{gid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="GoodMap">
+        select
+          gid, gname, gprice
+        from springcloud_provider.good
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="GoodMap">
+        select
+        gid, gname, gprice
+        from springcloud_provider.good
+        <where>
+            <if test="gid != null">
+                and gid = #{gid}
+            </if>
+            <if test="gname != null and gname != ''">
+                and gname = #{gname}
+            </if>
+            <if test="gprice != null">
+                and gprice = #{gprice}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="gid" useGeneratedKeys="true">
+        insert into springcloud_provider.good(gname, gprice)
+        values (#{gname}, #{gprice})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update springcloud_provider.good
+        <set>
+            <if test="gname != null and gname != ''">
+                gname = #{gname},
+            </if>
+            <if test="gprice != null">
+                gprice = #{gprice},
+            </if>
+        </set>
+        where gid = #{gid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from springcloud_provider.good where gid = #{gid}
+    </delete>
+
+</mapper>

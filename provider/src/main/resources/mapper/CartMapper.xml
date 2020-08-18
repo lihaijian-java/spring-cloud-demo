@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.javaboy.provider.dao.CartDao">
+
+    <resultMap type="com.javaboy.provider.entity.Cart" id="CartMap">
+        <result property="cid" column="cid" jdbcType="INTEGER"/>
+        <result property="uid" column="uid" jdbcType="INTEGER"/>
+        <result property="tprice" column="tprice" jdbcType="NUMERIC"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="CartMap">
+        select
+          cid, uid, tprice
+        from springcloud_provider.cart
+        where cid = #{cid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="CartMap">
+        select
+          cid, uid, tprice
+        from springcloud_provider.cart
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="CartMap">
+        select
+        cid, uid, tprice
+        from springcloud_provider.cart
+        <where>
+            <if test="cid != null">
+                and cid = #{cid}
+            </if>
+            <if test="uid != null">
+                and uid = #{uid}
+            </if>
+            <if test="tprice != null">
+                and tprice = #{tprice}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="cid" useGeneratedKeys="true">
+        insert into springcloud_provider.cart(uid, tprice)
+        values (#{uid}, #{tprice})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update springcloud_provider.cart
+        <set>
+            <if test="uid != null">
+                uid = #{uid},
+            </if>
+            <if test="tprice != null">
+                tprice = #{tprice},
+            </if>
+        </set>
+        where cid = #{cid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from springcloud_provider.cart where cid = #{cid}
+    </delete>
+
+
+    <select id="getCartsByUid"  parameterType="java.lang.Integer" resultType="com.javaboy.provider.vo.CartGood">
+      SELECT g.gname,g.gprice,cg.quanity FROM cart c
+         LEFT JOIN cart_good_relation  cg ON cg.cid = c.cid
+         LEFT JOIN good g on g.gid = cg.gid
+         WHERE c.cid = #{uid}
+    </select>
+
+</mapper>
