@@ -109,7 +109,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.3.0.RELEASE</version>
                 <configuration>
-                    <mainClass>com.javaboy.provider.ProviderApplication</mainClass>
+                    <mainClass>com.javaboy.comsumer.ComsumerApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>
