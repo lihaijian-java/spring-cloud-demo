@@ -1,5 +1,6 @@
 server:
   port: 8700
+#开启自动代理
 spring:
   cloud:
     gateway:
